@@ -1,0 +1,5 @@
+[gd_resource type="SystemFont" format=3 uid="uid://cs08r23351q2p"]
+
+[resource]
+font_names = PackedStringArray("Monospace", "Liberation Mono", "Courier New")
+font_weight = 500

@@ -1,0 +1,22 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://c2jrhor01gl38"]
+
+[ext_resource type="SystemFont" uid="uid://cs08r23351q2p" path="res://addons/irid/font/system/monospace_medium.tres" id="2_fcxr2"]
+[ext_resource type="FontVariation" uid="uid://chthmdaxij4fq" path="res://FiraMono/regular.tres" id="3_e8324"]
+
+[resource]
+default_font = ExtResource("3_e8324")
+default_font_size = 20
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 1)
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/constants/shadow_outline_size = 2
+Label/font_sizes/font_size = 14
+Label/fonts/font = ExtResource("2_fcxr2")
+RichTextLabel/colors/default_color = Color(1, 1, 1, 1)
+RichTextLabel/colors/font_shadow_color = Color(0, 0, 0, 1)
+RichTextLabel/constants/shadow_offset_x = 1
+RichTextLabel/constants/shadow_offset_y = 1
+RichTextLabel/constants/shadow_outline_size = 2
+RichTextLabel/font_sizes/normal_font_size = 14
+RichTextLabel/fonts/normal_font = ExtResource("2_fcxr2")
