@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cmrp07oi8j8lq"]
 
-[ext_resource type="Script" path="res://addons/irid/IridTextOverlay.gd" id="1_hso81"]
-[ext_resource type="Script" path="res://addons/irid/Irid.gd" id="1_qibhb"]
+[ext_resource type="Script" uid="uid://boc7puoo6fnwc" path="res://addons/irid/IridTextOverlay.gd" id="1_hso81"]
+[ext_resource type="Script" uid="uid://r4bdy5685gbq" path="res://addons/irid/Irid.gd" id="1_qibhb"]
 [ext_resource type="Theme" uid="uid://c2jrhor01gl38" path="res://addons/irid/debugoverlay_theme.tres" id="2_exljm"]
 
 [node name="Irid" type="Node"]
@@ -12,11 +12,11 @@ script = ExtResource("1_qibhb")
 script = ExtResource("1_hso81")
 
 [node name="DebugLabel" type="RichTextLabel" parent="TextOverlay"]
+auto_translate_mode = 2
 clip_contents = false
 custom_minimum_size = Vector2(8, 8)
 offset_right = 85.0
 offset_bottom = 20.0
-auto_translate = false
 localize_numeral_system = false
 mouse_filter = 2
 theme = ExtResource("2_exljm")
