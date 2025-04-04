@@ -6,4 +6,5 @@ func _ready() -> void:
 	debug.trace(^":transform")
 
 func _process(delta: float) -> void:
-	debug.display(Performance.get_monitor(Performance.TIME_FPS))
+	#debug.display(Performance.get_monitor(Performance.TIME_FPS))
+	Irid.text_overlay.display(Performance.get_monitor(Performance.TIME_FPS))

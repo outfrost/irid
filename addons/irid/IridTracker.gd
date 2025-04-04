@@ -7,6 +7,12 @@ var props: Array[NodePath] = []
 var msgs: Array[String] = []
 var physics_msgs: Array[String] = []
 
+var container: BoxContainer
+var title_label: RichTextLabel
+var props_label: RichTextLabel
+var msg_label_pool: Array[RichTextLabel]
+var physics_msg_label_pool: Array[RichTextLabel]
+
 func _init(node: Node) -> void:
 	self.node = node
 	var h : = hash(node.get_path())

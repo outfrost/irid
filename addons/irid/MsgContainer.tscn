@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b10t3ut1nds0q"]
+
+[node name="MsgContainer" type="VBoxContainer"]
+size_flags_vertical = 0
+localize_numeral_system = false
+mouse_filter = 2

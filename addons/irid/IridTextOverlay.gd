@@ -1,14 +1,25 @@
 class_name IridTextOverlay
 extends Node
 
-@onready var _label: RichTextLabel = $DebugLabel
+const MSG_CONTAINER_SCN: PackedScene = preload("res://addons/irid/MsgContainer.tscn")
+const LABEL_SCN: PackedScene = preload("res://addons/irid/TextOverlayLabel.tscn")
+const MSG_LABEL_POOL_INIT_SIZE: int = 16
+const TRACKER_LABEL_POOL_INIT_SIZE: int = 4
+
+@onready var _outer_container: BoxContainer = %OuterContainer
+@onready var _msg_container: BoxContainer = %MsgContainer
+@onready var _trackers_container: BoxContainer = %TrackersContainer
 @onready var _release_mode: bool = !OS.has_feature("debug")
 
-var _buffer: String = ""
+var _msgs: Array[String] = []
+var _msg_label_pool: Array[RichTextLabel] = []
 var _trackers: Array[IridTracker] = []
 
 func _ready():
-	_label.text = ""
+	for i in MSG_LABEL_POOL_INIT_SIZE:
+		var label: RichTextLabel = LABEL_SCN.instantiate()
+		_msg_label_pool.push_back(label)
+		_msg_container.add_child(label)
 
 	var font_file_path = ProjectSettings.get_setting_with_override("plugins/irid/text_overlay_font")
 	if !font_file_path || !(font_file_path is String):
@@ -18,7 +29,7 @@ func _ready():
 	if !font:
 		push_error("'%s' is not a valid Font resource file. Please check your project settings." % font_file_path)
 		return
-	_label.add_theme_font_override("normal_font", font)
+	_outer_container.add_theme_font_override("normal_font", font)
 
 	#print(_str(Rect2(10.0, 20.0, 100.0, 200.0)))
 	#print(_str(Rect2i(8, 16, 128, 256)))
@@ -32,9 +43,8 @@ func _ready():
 	#print(_str(Color.INDIGO))
 
 func _process(_delta):
+	_process_msgs()
 	_process_trackers()
-	_label.text = _buffer
-	_buffer = ""
 
 func _physics_process(delta: float) -> void:
 	_clear_tracker_physics_msgs()
@@ -42,48 +52,116 @@ func _physics_process(delta: float) -> void:
 func tracker(node: Node) -> IridTrackerProxy:
 	var tracker = IridTracker.new(node)
 	if !_release_mode:
+		_setup_tracker_labels(tracker)
 		_trackers.append(tracker)
 	return IridTrackerProxy.new(tracker, false)
 
 func public_tracker(node: Node) -> IridTrackerProxy:
 	var tracker = IridTracker.new(node)
+	_setup_tracker_labels(tracker)
 	_trackers.append(tracker)
 	return IridTrackerProxy.new(tracker, true)
 
 func display(v: Variant) -> void:
 	if _release_mode:
 		return
-	_buffer += _str(v) + "\n"
+	_msgs.push_back(_str(v))
 
 func display_public(v: Variant) -> void:
-	_buffer += _str(v) + "\n"
+	_msgs.push_back(_str(v))
+
+func _process_msgs() -> void:
+	var pool_grow: = _msgs.size() - _msg_label_pool.size()
+	if pool_grow > 0:
+		for i in pool_grow:
+			var label: RichTextLabel = LABEL_SCN.instantiate()
+			_msg_label_pool.push_back(label)
+			_msg_container.add_child(label)
+
+	for i in _msg_label_pool.size():
+		if i < _msgs.size():
+			(_msg_label_pool[i] as RichTextLabel).text = _msgs[i]
+		else:
+			(_msg_label_pool[i] as RichTextLabel).text = ""
+
+	_msgs.clear()
+
+func _setup_tracker_labels(tracker: IridTracker) -> void:
+	var container: = MSG_CONTAINER_SCN.instantiate()
+	container.modulate = tracker.color
+	tracker.container = container
+	_trackers_container.add_child(container)
+
+	var label: = LABEL_SCN.instantiate()
+	label.text = "[%s]" % tracker.node.name
+	tracker.title_label = label
+	container.add_child(label)
+
+	label = LABEL_SCN.instantiate()
+	tracker.props_label = label
+	container.add_child(label)
+
+	for i in TRACKER_LABEL_POOL_INIT_SIZE:
+		label = LABEL_SCN.instantiate()
+		tracker.msg_label_pool.push_back(label)
+		container.add_child(label)
+
+	for i in TRACKER_LABEL_POOL_INIT_SIZE:
+		label = LABEL_SCN.instantiate()
+		tracker.physics_msg_label_pool.push_back(label)
+		container.add_child(label)
 
 func _process_trackers() -> void:
 	for tracker in _trackers:
-		_buffer += "[color=#%s][%s]\n" % [tracker.color.to_html(), tracker.node.name]
+		var buffer: = String()
 		var one: = false
 		for prop in tracker.props:
 			if one:
-				_buffer += ", "
+				buffer += ", "
 			else:
-				_buffer += "    "
+				buffer += "    "
 			var prop_name: StringName = prop.get_concatenated_subnames()
-			_buffer += "%s: %s" % [ prop_name, _str(tracker.node.get(prop_name)) ]
+			buffer += "%s: %s" % [ prop_name, _str(tracker.node.get(prop_name)) ]
 			one = true
-		if one:
-			_buffer += "\n"
-		for msg in tracker.msgs:
-			_buffer += "    %s\n" % msg
+		tracker.props_label.text = buffer
+
+		var pool_grow: = tracker.msgs.size() - tracker.msg_label_pool.size()
+		if pool_grow > 0:
+			var child_idx: = (tracker.msg_label_pool.back() as Node).get_index()
+			for i in pool_grow:
+				child_idx += 1
+				var label: RichTextLabel = LABEL_SCN.instantiate()
+				tracker.msg_label_pool.push_back(label)
+				tracker.container.add_child(label)
+				tracker.container.move_child(label, child_idx)
+
+		for i in tracker.msg_label_pool.size():
+			if i < tracker.msgs.size():
+				(tracker.msg_label_pool[i] as RichTextLabel).text = "    " + tracker.msgs[i]
+			else:
+				(tracker.msg_label_pool[i] as RichTextLabel).text = ""
 		tracker.msgs.clear()
-		for msg in tracker.physics_msgs:
-			_buffer += "    %s\n" % msg
-		_buffer += "[/color]"
+
+		pool_grow = tracker.physics_msgs.size() - tracker.physics_msg_label_pool.size()
+		if pool_grow > 0:
+			for i in pool_grow:
+				var label: RichTextLabel = LABEL_SCN.instantiate()
+				tracker.physics_msg_label_pool.push_back(label)
+				tracker.container.add_child(label)
+
+		for i in tracker.physics_msg_label_pool.size():
+			if i < tracker.physics_msgs.size():
+				(tracker.physics_msg_label_pool[i] as RichTextLabel).text = "    " + tracker.physics_msgs[i]
+			else:
+				(tracker.physics_msg_label_pool[i] as RichTextLabel).text = ""
 
 func _clear_tracker_physics_msgs() -> void:
 	for tracker in _trackers:
 		tracker.physics_msgs.clear()
 
 func _drop_tracker(tracker: IridTracker) -> void:
+	if tracker.container:
+		tracker.container.queue_free()
 	_trackers.erase(tracker)
 
 func _str(v: Variant) -> String:

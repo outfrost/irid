@@ -1,9 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://d0c17dpjgru1x"]
+[gd_scene load_steps=3 format=3 uid="uid://d0c17dpjgru1x"]
 
 [ext_resource type="Script" uid="uid://dinymr1s8yuww" path="res://TestScene.gd" id="1_4y3xc"]
+[ext_resource type="Script" uid="uid://yxdh1eltxe3k" path="res://TestNode.gd" id="2_cguwc"]
 
 [node name="TestScene" type="Node2D"]
 script = ExtResource("1_4y3xc")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0.334694, 0.303462, 0.722656, 1)
+
+[node name="Node" type="Node" parent="."]
+script = ExtResource("2_cguwc")
