@@ -1,10 +1,9 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://c2jrhor01gl38"]
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://c2jrhor01gl38"]
 
 [ext_resource type="SystemFont" uid="uid://cs08r23351q2p" path="res://addons/irid/font/system/monospace_medium.tres" id="2_fcxr2"]
-[ext_resource type="FontVariation" uid="uid://chthmdaxij4fq" path="res://FiraMono/regular.tres" id="3_e8324"]
 
 [resource]
-default_font = ExtResource("3_e8324")
+default_font = ExtResource("2_fcxr2")
 default_font_size = 20
 BoxContainer/constants/separation = 0
 Label/colors/font_color = Color(1, 1, 1, 1)
