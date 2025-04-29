@@ -29,8 +29,8 @@ func display(v: Variant) -> IridTrackerProxy:
 	if Irid.show_calling_function:
 		var stack_frame = get_stack()[1]
 		msg = "%s:%d :: %s" % [
-			stack_frame.function,
-			stack_frame.line,
+			stack_frame[&"function"],
+			stack_frame[&"line"],
 			Irid.text_overlay._str(v),
 		]
 	else:

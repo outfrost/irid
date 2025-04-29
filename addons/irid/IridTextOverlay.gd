@@ -93,6 +93,9 @@ func _setup_tracker_labels(tracker: IridTracker) -> void:
 
 	var label: RichTextLabel = LABEL_SCN.instantiate()
 	label.text = "[%s]" % tracker.node.name
+	if Irid.show_source_script:
+		var stack_frame = get_stack()[2]
+		label.text += " [color=#bbbbbbff][%s][/color]" % stack_frame[&"source"]
 	label.add_theme_color_override(&"default_color", tracker.color)
 	tracker.title_label = label
 	container.add_child(label)
