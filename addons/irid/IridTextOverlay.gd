@@ -171,29 +171,31 @@ func _str(v: Variant) -> String:
 		TYPE_INT:
 			return "%3d" % v
 		TYPE_FLOAT:
-			return "%7.4f" % v
+			return "%6.3f" % v
+		TYPE_STRING:
+			return v as String
 		TYPE_VECTOR2, TYPE_VECTOR3, TYPE_VECTOR4:
-			return "%7.4v" % v
+			return "%6.3v" % v
 		TYPE_VECTOR2I, TYPE_VECTOR3I, TYPE_VECTOR4I:
 			return "%3.v" % v
 		TYPE_RECT2, TYPE_AABB:
-			return "(pos: %7.4v, size: %7.4v)" % [v.position, v.size]
+			return "(pos: %6.3v, size: %6.3v)" % [v.position, v.size]
 		TYPE_RECT2I:
 			return "(pos: %3.v, size: %3.v)" % [v.position, v.size]
 		TYPE_TRANSFORM2D:
-			return "(pos: %7.4v, rot: %7.2f°, scl: %7.4v, skew: %7.2f°)" % [
+			return "(pos: %6.3v, rot: %6.1f°, scl: %6.3v, skew: %6.1f°)" % [
 				v.origin,
 				rad_to_deg(v.get_rotation()),
 				v.get_scale(),
 				rad_to_deg(v.get_skew()),
 			]
 		TYPE_PLANE:
-			return "(nrm: %7.4v, dist: %7.4f)" % [v.normal, v.d]
+			return "(nrm: %6.3v, dist: %6.3f)" % [v.normal, v.d]
 		TYPE_QUATERNION:
-			return "(%7.4f, %7.4f, %7.4f, %7.4f)" % [v.x, v.y, v.z, v.w]
+			return "(%6.3f, %6.3f, %6.3f, %6.3f)" % [v.x, v.y, v.z, v.w]
 		TYPE_BASIS:
 			var euler: Vector3 = v.get_euler()
-			return "(rot: (%7.2f°, %7.2f°, %7.2f°), scl: %7.4v)" % [
+			return "(rot: (%6.1f°, %6.1f°, %6.1f°), scl: %6.3v)" % [
 				rad_to_deg(euler.x),
 				rad_to_deg(euler.y),
 				rad_to_deg(euler.z),
@@ -201,7 +203,7 @@ func _str(v: Variant) -> String:
 			]
 		TYPE_TRANSFORM3D:
 			var euler: Vector3 = v.basis.get_euler()
-			return "(pos: %7.4v, rot: (%7.2f°, %7.2f°, %7.2f°), scl: %7.4v)" % [
+			return "(pos: %6.3v, rot: (%6.1f°, %6.1f°, %6.1f°), scl: %6.3v)" % [
 				v.origin,
 				rad_to_deg(euler.x),
 				rad_to_deg(euler.y),
@@ -209,10 +211,10 @@ func _str(v: Variant) -> String:
 				v.basis.get_scale(),
 			]
 		TYPE_PROJECTION:
-			return "(c0: %7.4v, c1: %7.4v, c2: %7.4v, c3: %7.4v)" % [v.x, v.y, v.z, v.w]
+			return "(c0: %6.3v, c1: %6.3v, c2: %6.3v, c3: %6.3v)" % [v.x, v.y, v.z, v.w]
 		TYPE_COLOR:
 			var hex: String = v.to_html()
-			return "[color=#%s]■[/color] (r: %6.4f, g: %6.4f, b: %6.4f, a: %6.4f, hex: #%s)" % [
+			return "[color=#%s]■[/color] (r: %5.3f, g: %5.3f, b: %5.3f, a: %5.3f, hex: #%s)" % [
 				hex,
 				v.r,
 				v.g,
