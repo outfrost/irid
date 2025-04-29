@@ -88,26 +88,29 @@ func _process_msgs() -> void:
 
 func _setup_tracker_labels(tracker: IridTracker) -> void:
 	var container: = MSG_CONTAINER_SCN.instantiate()
-	container.modulate = tracker.color
 	tracker.container = container
 	_trackers_container.add_child(container)
 
-	var label: = LABEL_SCN.instantiate()
+	var label: RichTextLabel = LABEL_SCN.instantiate()
 	label.text = "[%s]" % tracker.node.name
+	label.add_theme_color_override(&"default_color", tracker.color)
 	tracker.title_label = label
 	container.add_child(label)
 
 	label = LABEL_SCN.instantiate()
+	label.add_theme_color_override(&"default_color", tracker.color)
 	tracker.props_label = label
 	container.add_child(label)
 
 	for i in TRACKER_LABEL_POOL_INIT_SIZE:
 		label = LABEL_SCN.instantiate()
+		label.add_theme_color_override(&"default_color", tracker.color)
 		tracker.msg_label_pool.push_back(label)
 		container.add_child(label)
 
 	for i in TRACKER_LABEL_POOL_INIT_SIZE:
 		label = LABEL_SCN.instantiate()
+		label.add_theme_color_override(&"default_color", tracker.color)
 		tracker.physics_msg_label_pool.push_back(label)
 		container.add_child(label)
 
@@ -131,6 +134,7 @@ func _process_trackers() -> void:
 			for i in pool_grow:
 				child_idx += 1
 				var label: RichTextLabel = LABEL_SCN.instantiate()
+				label.add_theme_color_override(&"default_color", tracker.color)
 				tracker.msg_label_pool.push_back(label)
 				tracker.container.add_child(label)
 				tracker.container.move_child(label, child_idx)
@@ -146,6 +150,7 @@ func _process_trackers() -> void:
 		if pool_grow > 0:
 			for i in pool_grow:
 				var label: RichTextLabel = LABEL_SCN.instantiate()
+				label.add_theme_color_override(&"default_color", tracker.color)
 				tracker.physics_msg_label_pool.push_back(label)
 				tracker.container.add_child(label)
 
