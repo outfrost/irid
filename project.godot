@@ -22,3 +22,7 @@ Irid="*res://addons/irid/Irid.tscn"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/irid/plugin.cfg")
+
+[plugins]
+
+irid/text_overlay_font="uid://cs08r23351q2p"

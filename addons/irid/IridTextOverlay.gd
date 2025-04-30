@@ -1,6 +1,8 @@
 class_name IridTextOverlay
 extends Node
 
+const Common: = preload("res://addons/irid/Common.gd")
+
 const MSG_CONTAINER_SCN: PackedScene = preload("res://addons/irid/MsgContainer.tscn")
 const LABEL_SCN: PackedScene = preload("res://addons/irid/TextOverlayLabel.tscn")
 const MSG_LABEL_POOL_INIT_SIZE: int = 16
@@ -21,15 +23,16 @@ func _ready():
 		_msg_label_pool.push_back(label)
 		_msg_container.add_child(label)
 
-	var font_file_path = ProjectSettings.get_setting_with_override("plugins/irid/text_overlay_font")
+	var font_file_path = ProjectSettings.get_setting_with_override(Common.TEXT_OVERLAY_FONT_SETTING)
 	if !font_file_path || !(font_file_path is String):
-		push_error("Missing or invalid project setting 'plugins/irid/text_overlay_font'.")
+		push_error("Missing or invalid project setting '%s'." % Common.TEXT_OVERLAY_FONT_SETTING)
 		return
 	var font: = load(font_file_path) as Font
 	if !font:
 		push_error("'%s' is not a valid Font resource file. Please check your project settings." % font_file_path)
 		return
-	_outer_container.add_theme_font_override("normal_font", font)
+	_outer_container.theme = _outer_container.theme.duplicate()
+	_outer_container.theme.set_font(&"normal_font", &"RichTextLabel", font)
 
 	#print(_str(Rect2(10.0, 20.0, 100.0, 200.0)))
 	#print(_str(Rect2i(8, 16, 128, 256)))
