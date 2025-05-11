@@ -1,10 +1,12 @@
-class_name IridTrackerProxy
 extends RefCounted
 
-var _tracker: IridTracker
+const Common: = preload("res://addons/irid/Common.gd")
+const TextTracker: = preload("res://addons/irid/TextTracker.gd")
+
+var _tracker: TextTracker
 var _visible_in_release: bool = false
 
-func _init(tracker: IridTracker, visible_in_release: bool) -> void:
+func _init(tracker: TextTracker, visible_in_release: bool) -> void:
 	_tracker = tracker
 	_visible_in_release = visible_in_release
 
@@ -12,7 +14,7 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
 		Irid.text_overlay._drop_tracker(_tracker)
 
-func trace(property: NodePath) -> IridTrackerProxy:
+func trace(property: NodePath) -> RefCounted:
 	if Irid.text_overlay._release_mode && !_visible_in_release:
 		return self
 	if property.is_empty():
@@ -21,7 +23,7 @@ func trace(property: NodePath) -> IridTrackerProxy:
 	_tracker.props.append(property.get_as_property_path())
 	return self
 
-func display(v: Variant) -> IridTrackerProxy:
+func display(v: Variant) -> RefCounted:
 	if Irid.text_overlay._release_mode && !_visible_in_release:
 		return self
 
@@ -31,10 +33,10 @@ func display(v: Variant) -> IridTrackerProxy:
 		msg = "%s:%d :: %s" % [
 			stack_frame[&"function"],
 			stack_frame[&"line"],
-			Irid.text_overlay._str(v),
+			Common._str(v),
 		]
 	else:
-		msg = "%s" % Irid.text_overlay._str(v)
+		msg = "%s" % Common._str(v)
 
 	if Engine.is_in_physics_frame():
 		_tracker.physics_msgs.append(msg)

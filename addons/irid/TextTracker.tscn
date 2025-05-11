@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://b10t3ut1nds0q"]
+
+[ext_resource type="Script" uid="uid://cuvuxwj6wd45e" path="res://addons/irid/TextTracker.gd" id="1_1p1ah"]
+
+[node name="TextTracker" type="VBoxContainer"]
+size_flags_vertical = 0
+localize_numeral_system = false
+mouse_filter = 2
+script = ExtResource("1_1p1ah")

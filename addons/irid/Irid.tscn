@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://cmrp07oi8j8lq"]
 
-[ext_resource type="Script" uid="uid://boc7puoo6fnwc" path="res://addons/irid/IridTextOverlay.gd" id="1_hso81"]
+[ext_resource type="Script" uid="uid://boc7puoo6fnwc" path="res://addons/irid/TextOverlay.gd" id="1_hso81"]
 [ext_resource type="Script" uid="uid://r4bdy5685gbq" path="res://addons/irid/Irid.gd" id="1_qibhb"]
 [ext_resource type="Theme" uid="uid://c2jrhor01gl38" path="res://addons/irid/debugoverlay_theme.tres" id="2_exljm"]
-[ext_resource type="PackedScene" uid="uid://b10t3ut1nds0q" path="res://addons/irid/MsgContainer.tscn" id="4_kugss"]
+[ext_resource type="PackedScene" uid="uid://dn685fjq2r8h4" path="res://addons/irid/MsgContainer.tscn" id="4_kugss"]
 
 [node name="Irid" type="Node"]
 process_mode = 3
